@@ -102,3 +102,40 @@ Afinal, a Física está em todo lugar — basta observar o caminho que as coisas
 [Tela final]
 Lançamento de projéteis: da Terra ao espaço.
 Obrigado por assistir!
+
+
+"""
+Animação em Python — Lançamento de Projéteis
+Baseado no roteiro "Trajetórias: A Ciência dos Projéteis"
+
+Reúne, em uma única animação sequencial, as 4 cenas do roteiro:
+  1) A parábola de Galileu
+  2) A catapulta (3 ângulos)
+  3) O canhão de Newton (transição para a órbita)
+  4) O gol do Gabigol (Libertadores 2019)
+
+Requisitos: matplotlib, numpy
+Saída: projeteis.gif (e é possível trocar para .mp4 se tiver ffmpeg)
+"""
+
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from matplotlib.patches import Circle
+
+# desliga antialiasing: gera blocos de cor "chapada" em vez de gradientes,
+# o que comprime MUITO melhor em GIF (paleta indexada) e evita o erro de download
+plt.rcParams["lines.antialiased"] = False
+plt.rcParams["patch.antialiased"] = False
+plt.rcParams["path.simplify"] = True
+
+g = 9.8  # aceleração da gravidade (m/s^2)
+
+# ---------- funções físicas ----------
+def trajetoria(v0, angulo_graus, t):
+    theta = np.radians(angulo_graus)
+    x = v0 * np.cos(theta) * t
+    y = v0 * np.sin(theta) * t - 0.5 * g * t**2
+    y = np.clip(y, 0, None)
+    return x, y
+
